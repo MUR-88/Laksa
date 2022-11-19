@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Kategori extends Model
+class ProdukJual extends Model
 {
     use HasFactory, SoftDeletes;
 
