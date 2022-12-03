@@ -70,5 +70,8 @@ Route::middleware('auth.user')->group(function(){
 
     Route::get('/sesi_hari', [InvoiceController::class, 'sesi_hari']);
     Route::get('/sesi', [InvoiceController::class, 'sesi']);
+    
+    
 });
+Route::get('/kontakAdmin', [InvoiceController::class, 'kontak_admin']);
 

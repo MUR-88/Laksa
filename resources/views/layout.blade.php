@@ -178,16 +178,6 @@
 										<span class="menu-title">Transaksi Pickup</span>
 									</a>
 								</div>
-								<div class="menu-item">
-										 <a class="menu-link @if($active == 'History') active @endif" href="{{ route('invoice.history')}}"> 
-										<span class="menu-icon">
-											<span class="svg-icon svg-icon-2">
-												<i class="fa fa-receipt"></i>
-											</span>
-										</span>
-										<span class="menu-title">History Invoice</span>
-									</a>
-								</div>
                                 <div class="menu-item">
 									<a class="menu-link @if($active == 'transaksi_reservasi') active @endif"  href="{{ route('transaksi_reservasi')}}">
 										<span class="menu-icon">
@@ -196,6 +186,16 @@
 											</span>
 										</span>
 										<span class="menu-title">Transaksi Reservasi</span>
+									</a>
+								</div>
+								<div class="menu-item">
+										<a class="menu-link @if($active == 'History') active @endif" href="{{ route('invoice.history')}}"> 
+										<span class="menu-icon">
+											<span class="svg-icon svg-icon-2">
+												<i class="fa fa-receipt"></i>
+											</span>
+										</span>
+										<span class="menu-title">History Invoice</span>
 									</a>
 								</div>
 								<div class="menu-item">
@@ -236,6 +236,21 @@
 											</span>
 										</span>
 										<span class="menu-title">Notifikasi</span>
+									</a>
+								</div>
+								<div class="menu-item">
+									<div class="menu-content pt-8 pb-2">
+										<span class="menu-section text-muted text-uppercase fs-8 ls-1">Akun</span>
+									</div>
+								</div>
+                                <div class="menu-item">
+									<a class="menu-link" href="{{ route('logout') }}">
+										<span class="menu-icon">
+											<span class="svg-icon svg-icon-2">
+												<i class="fa fa-chevron-right"></i>
+											</span>
+										</span>
+										<span class="menu-title">Logout</span>
 									</a>
 								</div>
 							</div>
@@ -297,16 +312,16 @@
 							</div>
 						</div>
 					</div>
-					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-						<div class="d-flex bd-highlight ">
-							<div class="p-2 bd-highlight ms-20">
-								<h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">
-									{{ $title }}
-								</h1>
-							</div>
-						</div>
+					<div class="content d-flex flex-column flex-column-fluid mt-0" id="kt_content">
 						<div class="post d-flex flex-column-fluid" id="kt_post">
 							<div id="kt_content_container" class="container-xxl">
+								<div class="d-flex bd-highlight ">
+									<div class="p-2 bd-highlight">
+										<h1 class="d-flex align-items-center text-dark fw-bolder fs-1 my-1 mb-10">
+											{{ $title }}
+										</h1>
+									</div>
+								</div>
 								@if($errors->any())
 									<div class="alert alert-danger d-flex flex-row">
 										<span class="svg-icon svg-icon-2hx svg-icon-danger me-3">
@@ -347,7 +362,7 @@
 		<script src="/assets/plugins/global/plugins.bundle.js"></script>
 		<script src="/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 
-		{{-- <script src="/assets/js/scripts.bundle.js"></script> --}}
+		<script src="/assets/js/scripts.bundle.js"></script>
 		<!--end::Global Javascript Bundle-->
 		<!--begin::Page Vendors Javascript(used by this page)-->
 		{{-- <script src="/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js"></script> --}}

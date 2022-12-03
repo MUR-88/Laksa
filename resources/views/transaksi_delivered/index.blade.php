@@ -14,29 +14,37 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>User Id</th>
                             <th>Invoice Id</th>
-                            <th>keterangan</th>
+                            <th>User Id</th>
                             <th>Status</th>
-                            <th>deleted_at</th>
+                            <th>Total Order</th>
+                            <th>Total Item</th>
+                            <th>Total Belanja</th>
+                            <th>Alamat</th>
+                            <th>keterangan</th>
                             <th>created_at</th>
                             <th>updated_at</th>
+                            <th>Aksi</th>
+
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($transaksi_delivered as $index => $item)
                             <tr>
                                 <td>{{ $index+1 }}</td>
+                                <td>#{{ $item->id }}</td>
                                 <td>{{ $item->user->nama }} <br> {{$item->user->email}}</td>
-                                <td>{{ $item->invoice_id }}</td>
-                                <td>{{ $item->keterangan }}</td>
                                 <td>{{ $item->status }}</td>
-                                <td>{{ $item->deleted_at }}</td>
+                                <td>{{ $item->total_formatted }}</td>
+                                <td>{{ count($item->invoiceDetail) }}</td>
+                                <td>{{ $item->total }}</td>
+                                <td>{{ $item->alamatUser->keterangan }}</td>
+                                <td>{{ $item->keterangan }}</td>
                                 <td>{{ $item->created_at }}</td>
                                 <td>{{ $item->updated_at }}</td>
                                 <td>
-                                    <a class="btn btn-primary btn-sm" href="{{ route('transaksi_delivered.edit', ['id' => $item->id]) }}">
-                                        Edit
+                                    <a class="btn btn-primary btn-sm" href="{{ route('invoice.detail', ['id' => $item->id]) }}">
+                                        Detail    
                                     </a>
                                 </td>
                             </tr>

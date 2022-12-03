@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('sesis');
+        Schema::dropIfExists('sesi');
     }
 
     /**

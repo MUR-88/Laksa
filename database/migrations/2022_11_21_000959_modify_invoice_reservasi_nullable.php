@@ -14,7 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::table('invoice_reservasi', function (Blueprint $table) {
-            $table->dropColumn('id');
+            // $table->string('nama')->nullable();
+            // $table->string('kontak')->nullable();
+            // $table->string('waktu_kedatangan')->nullable();
+            // $table->string('invoice_id')->nullable();
+            // $table->string('jmlh_orang')->nullable();
         });
     }
 
@@ -25,6 +29,5 @@ return new class extends Migration
      */
     public function down()
     {
-        //
     }
 };

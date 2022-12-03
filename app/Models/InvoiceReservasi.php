@@ -13,4 +13,16 @@ class InvoiceReservasi extends Model
     protected $table = 'invoice_reservasi';
 
     protected $guarded = [];
+    
+    public function User(){
+        return $this->belongsTo(User::class);
+    }
+    
+    public function Invoice(){
+        return $this->belongsTo(Invoice::class);
+    }
+    
+    public function invoiceDetail(){
+        return $this->belongsTo(InvoiceDetail::class);
+    }
 }

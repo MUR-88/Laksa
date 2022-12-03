@@ -13,11 +13,23 @@ class InvoiceController extends Controller
         $tanggal_akhir = $request->input('tanggal_akhir') ? Carbon::parse($request->input('tanggal_akhir'))->where('status', 1)->format('Y-m-d') : Carbon::now()->format('Y-m-d');
         return view('invoice/index', [
             'title'=>'invoice',
-            'invoice' => Invoice::where('status', 1)->get(),
+            'invoice' => Invoice::whereIn('status', [2, 3])
+                ->whereDate('created_at', '>=', $tanggal_awal)
+                ->whereDate('created_at', '<=', $tanggal_akhir)->get(),
             'active' => 'invoice',
             'tanggal_awal' => $tanggal_awal,
             'tanggal_akhir' => $tanggal_akhir
 
+        ]);
+    }
+
+    function detail (Request $request, $id){
+        $invoice = Invoice::find($id);
+
+        return view('invoice/detail', [
+            'title'=>'invoice',
+            'invoice' => $invoice,
+            'active' => 'transaksi_delivered',
         ]);
     }
 

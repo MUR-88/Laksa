@@ -14,9 +14,8 @@ class TransaksiDeliveredController extends Controller
         return view('transaksi_delivered/index', [
             'title'=>'Transaksi Delivered',
             'user' => User::get(),
-            'invoice' => Invoice::get(),
+            'transaksi_delivered' => Invoice::where('status_ordered', 2)->where('status', 1)->get(),
             'alamat' => AlamatUser::get(),
-            'transaksi_delivered' => TransaksiDelivered::get(),
             'active' => 'transaksi_delivered'
         ]);
     }

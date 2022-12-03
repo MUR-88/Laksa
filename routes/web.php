@@ -84,6 +84,7 @@ Route::prefix('webview')->group(function(){
 Route::get('/privasi', [PrivasiController::class,'privasi'])->name('privasi');
 
 Route::middleware('auth:admin')->group(function(){
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::prefix('kategori')->group(function(){
         Route::get('/', [KategoriController::class, 'index']) ->name('kategori');
         Route::get('/tambah', [KategoriController::class, 'tambah']) ->name('kategori.tambah');
@@ -160,6 +161,9 @@ Route::middleware('auth:admin')->group(function(){
         Route::get('/edit/{id}', [AlamatUserController::class, 'edit']) ->name('alamat_user.edit');
         Route::post('/edit', [AlamatUserController::class, 'postEdit']) ->name('post.alamat_user.edit');
     });
+
+    Route::get('/invoice/detail/{id}', [InvoiceController::class, 'detail'])->name('invoice.detail');
+
     Route::prefix('transaksi_delivered')->group(function(){
         Route::get('/', [TransaksiDeliveredController::class, 'index']) ->name('transaksi_delivered');
         Route::get('/tambah', [TransaksiDeliveredController::class, 'tambah']) ->name('transaksi_delivered.tambah');
@@ -167,6 +171,7 @@ Route::middleware('auth:admin')->group(function(){
         Route::get('/edit/{id}', [TransaksiDeliveredController::class, 'edit']) ->name('transaksi_delivered.edit');
         Route::post('/edit', [TransaksiDeliveredController::class, 'postEdit']) ->name('post.transaksi_delivered.edit');
     });
+
     Route::prefix('transaksi_pickup')->group(function(){
         Route::get('/', [TransaksiPickupController::class, 'index']) ->name('transaksi_pickup');
         Route::get('/tambah', [TransaksiPickupController::class, 'tambah']) ->name('transaksi_pickup.tambah');

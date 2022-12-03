@@ -10,6 +10,7 @@ use App\Models\InvoiceDetail;
 use App\Models\InvoiceDetailAddons;
 use App\Models\InvoiceReservasi;
 use App\Models\Produk;
+use App\Models\KontakAdmin;
 use App\Models\ProdukAddons;
 use App\Models\PushNotification;
 use App\Models\Sesi;
@@ -17,7 +18,6 @@ use App\Models\SesiHari;
 use App\Services\InvoiceService;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
-use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
@@ -248,7 +248,7 @@ class InvoiceController extends Controller
         }
 
         $response = $this->invoiceService->currentInvoice($request->user_id)
-            ->calculateSummary($request->voucher_user_id, $request->jarak);
+            ->calculateSummary($request->voucher_user_id, $request->jarak, $request->status_ordered);
 
         return $this->response->index($response['status'], 200, $response['message'], array_key_exists('data', $response) ? $response['data'] : null);
     }
@@ -297,20 +297,8 @@ class InvoiceController extends Controller
         }
         $invoice_selesai = Invoice::with('invoiceDetailFirst.produk.produkFotoFirst')
         ->withCount('invoiceDetail')->whereIn('status', $status)->paginate(15);
+
         return $this->response->index(1, 200, 'Berhasil Mengambil data Invoice selesai', $invoice_selesai);
-    }
-
-    function postCheckout(Request $request){
-        $invoice = Invoice::find('id');
-
-        PushNotification::create([
-            'user_id' => $invoice->user_id,
-            'invoice_id' => $invoice->id,
-            'judul' => 'Pesanan dengan ID#'. $invoice->id .'akan kami proses',
-            'isi' => 'Haii'. $invoice->user_id->nama . 'Pesanan Kami Telah dibuat, Silahkan Lakukan Pembayaran Yahh :)',
-            'tipe_suara' => 1,
-            'is_with_sound' => 1,
-        ]);
     }
 
     function invoice_checkout(Request $request){
@@ -325,9 +313,11 @@ class InvoiceController extends Controller
             return $this->response->index(0, 422, $validator->errors()->first());
         }
 
-        if($request->status_ordered != 3 ){
+        if($request->status_ordered == 2){
             $validator = Validator::make($request->all(), [
-                'sesi' => 'nullable|required_if:status_ordered,2|date',
+                'sesi' => 'required|date'
+            ], [
+                'sesi.date' => 'Sesi harus diisi'
             ]);
 
             if($validator->fails()){
@@ -337,17 +327,23 @@ class InvoiceController extends Controller
 
         if($request->status_ordered == 3){
             $validator = Validator::make($request->all(), [
-                'reservasi' => 'nullable|required_if:status_ordered,3|array',
-                'reservasi.jmlh_orang' => 'required_if:status_ordered,3|numeric|min:1',
-                'reservasi.waktu_kedatangan' => 'required_if:status_ordered,3|date',
+                'reservasi' => 'nullable|array',
+                'reservasi.jmlh_orang' => 'numeric|min:1',
+                'reservasi.waktu_kedatangan' => 'date',
                 'reservasi.nama' => 'required_if:status_ordered,3',
                 'reservasi.kontak' => 'required_if:status_ordered,3',
-            ], [
-                
             ]);
     
             if($validator->fails()){
                 return $this->response->index(0, 422, $validator->errors()->first());
+            }
+
+            if(Carbon::parse($request->reservasi['waktu_kedatangan'])->lt(now())){
+                return $this->response->index(0, 200, 'Waktu reservasi sudah lampau');
+            }
+            // validasi waktu reservasi
+            if(Carbon::parse($request->reservasi['waktu_kedatangan'])->addHours(2)->lt(now())){
+                return $this->response->index(0, 200, 'Reservasi minimal 2 jam sebelum');
             }
         }
 
@@ -367,7 +363,10 @@ class InvoiceController extends Controller
             }
         }
         
-        $response = (new InvoiceService())->currentInvoice($request->user_id)->calculateSummary($request->voucher_user_id, $invoice->alamatUser ? $invoice->alamatUser->jarak : 0);
+        $response = (new InvoiceService())
+            ->currentInvoice($request->user_id)
+            ->calculateSummary($request->voucher_user_id, $invoice->alamatUser ? $invoice->alamatUser->jarak : 0, $request->status_ordered);
+        
         if($response['status'] == 0){
             return $this->response->index(0, 200, $response['message']);
         }
@@ -380,8 +379,8 @@ class InvoiceController extends Controller
                 'potongan' => $response['data']['potongan_harga'],
                 'total' => $response['data']['total'],
                 'voucher_user_id' => $request->voucher_user_id,
-                'sesi' => $request->status_ordered == 3 ? $invoice->sesi : '',
-                'tujuan_alamat' => $invoice->alamatUser ? $invoice->alamatUser->keterangan : '',
+                'sesi' => $request->status_ordered == 2 ? $invoice->sesi : null,
+                'tujuan_alamat' => $request->status_ordered == 2 ? ($invoice->alamatUser ? $invoice->alamatUser->keterangan : '') : '',
                 'latitude' => $invoice->alamatUser ? $invoice->alamatUser->latitude : null,
                 'langitude' => $invoice->alamatUser ? $invoice->alamatUser->longitude : null,
                 'catatan' => $request->catatan
@@ -390,10 +389,10 @@ class InvoiceController extends Controller
             if($request->status_ordered == 3){
                 InvoiceReservasi::create([
                     'invoice_id' => $invoice->id,
-                    'waktu_kedatangan' => $request->waktu_kedatangan,
-                    'jmlh_orang' => $request->jmlh_orang,
-                    'nama' => $request->nama,
-                    'kontak' => $request->kontak
+                    'waktu_kedatangan' => $request->reservasi['waktu_kedatangan'],
+                    'jmlh_orang' => $request->reservasi['jmlh_orang'],
+                    'nama' => $request->reservasi['nama'],
+                    'kontak' => $request->reservasi['kontak']
                 ]);
             }
 
@@ -410,5 +409,11 @@ class InvoiceController extends Controller
         } catch (\Exception $error) {
             return $this->response->index(0, 500, $error->getMessage());
         }
+
     }
+        function kontak_admin(Request $request){
+            $kontak_admin1 = KontakAdmin::first();
+        
+            return $this->response->index(1, 200, 'berhasil mengambil data kontak admin', $kontak_admin1);
+        }
 }

@@ -19,11 +19,19 @@ class InvoiceService {
         return $this;
     }
 
-    function calculateSummary($voucher_user_id, $jarak){
+    function calculateSummary($voucher_user_id, $jarak, $status_ordered){
         $voucherService = new VoucherService();
         
         try {
-            $ongkir = $this->calculateOngkir($jarak);
+            if($status_ordered == 2){
+                $ongkir = $this->calculateOngkir($jarak);
+            } else {
+                $ongkir = [
+                    'ongkir' => 0,
+                    'ongkir_formatted' => 'Rp. 0'
+                ];
+            }
+            
             $harga = $this->invoice->invoiceDetail->sum(function($invoiceDetail){
                 $harga_detail = $invoiceDetail->harga * $invoiceDetail->jumlah;
                 $harga_detail_addons = $invoiceDetail->invoiceDetailAddons->sum(function($invoiceDetailAddons) use ($invoiceDetail){

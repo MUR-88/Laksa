@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\UserOtp;
 use App\Services\InvoiceService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Storage;
@@ -349,5 +350,10 @@ class AuthController extends Controller
     //     return $this->response->index(1, 200,' yeah');
     // }
 
+
+    function logout(){
+        Auth::logout();
+        return redirect()->route('admin.login');
+    }
     
 }

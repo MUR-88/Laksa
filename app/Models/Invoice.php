@@ -55,4 +55,11 @@ class Invoice extends Model
     // public function produkFoto(){
     //     return $this->belongsTo(ProdukFoto::class);
     // }
+    public function produkAddons(){
+        return $this->hasMany(ProdukAddons::class);
+    }
+
+    public function invoiceReservasi(){
+        return $this->hasOne(InvoiceReservasi::class)->withTrashed();
+    }
 }
