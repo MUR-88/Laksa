@@ -84,8 +84,10 @@ Route::prefix('webview')->group(function(){
 Route::get('/privasi', [PrivasiController::class,'privasi'])->name('privasi');
 
 Route::middleware('auth:admin')->group(function(){
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::prefix('kategori')->group(function(){
+    Route::get('/logout', [AuthController::class, 'logout'])
+        ->name('logout');
+    
+        Route::prefix('kategori')->group(function(){
         Route::get('/', [KategoriController::class, 'index']) ->name('kategori');
         Route::get('/tambah', [KategoriController::class, 'tambah']) ->name('kategori.tambah');
         Route::post('/tambah', [KategoriController::class, 'postTambah']) ->name('post.kategori.tambah');

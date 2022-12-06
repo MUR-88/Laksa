@@ -61,7 +61,7 @@
                                 <td>{{ $item->isi }}</td>
                                 <td>{{ $item->is_admin }}</td>
                                 @if($item->invoice)
-                                <td>{{ $item->driver_id, $item->driver->nama }}</td>
+                                <td>{{ $item->driver?->nama }}</td>
                                 @else
                                     <td></td>
                                 @endif

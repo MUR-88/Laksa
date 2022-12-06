@@ -21,10 +21,12 @@ class NotifikasiController extends Controller
 
         // $invoice = Invoice::where('status', 1)->get();
         $invoice_selesai_today = Invoice::where('status', 2)->whereDate('waktu_order', now())->count();
-        $invoice_progress = Invoice::where('status', 1)->count();     
+        $invoice_progress = Invoice::where('status', 1)->whereDate('waktu_order', now())->count();     
         $invoice_progress_today = Invoice::where('status', 1)->with('invoiceDetail.produk')->with('user')->get();
         $invoice_selesai_skrg = Invoice::where('status', 2)->with('invoiceDetail.produk')->with('user')->get();
         $invoice_uang_today = Invoice::where('status', 2)->whereDate('waktu_order', now())->sum('total');
+        $invoice_BB = Invoice::where('status_pembayaran', 1)->whereDate('waktu_order', now())->count();
+
         return $this->response->index(1, 200, 'Berhasil Mengambil data Notifikasi', 
         [
         //    'invoice' => $invoice,
@@ -33,6 +35,8 @@ class NotifikasiController extends Controller
            'invoice_progress' =>$invoice_progress,
            'invoice_uang_today' => $invoice_uang_today,
            'invoice_selesai_skrg' => $invoice_selesai_skrg,
+           'invoice_BB' => $invoice_BB,
+
 
         ]
     );

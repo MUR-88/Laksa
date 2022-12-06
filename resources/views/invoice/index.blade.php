@@ -17,13 +17,13 @@
           </div>
         </div>
       </form>
-      <div class="row d-flex justify-content-between">
+      {{-- <div class="row d-flex justify-content-between">
         <a href="{{ route('invoice.tambah') }}" class="col-2 btn btn-primary mb-10"><i class="fa fa-plus"></i> Tambah</a>
         <div class="input-group w-200px">
           <span class="input-group-text border-transparent" id="basic-addon1"><i class="col-6 fa fa-search"></i></span>
           <input type="text" class="form-control form-control-solid" name="search" placeholder="Cari sesuatu..">
         </div>
-      </div>
+      </div> --}}
       <div class="table-responsive">
         <table class="table table-striped table-row-bordered gy-7 gs-7 table-invoice">
             <thead>

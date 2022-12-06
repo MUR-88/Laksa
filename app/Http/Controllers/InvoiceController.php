@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 class InvoiceController extends Controller
 {
     function index (Request $request){
-        $tanggal_awal = $request->input('tanggal_awal') ? Carbon::parse($request->input('tanggal_awal'))->where('status', 1)->format('Y-m-d') : Carbon::now()->subDays(7)->format('Y-m-d');
-        $tanggal_akhir = $request->input('tanggal_akhir') ? Carbon::parse($request->input('tanggal_akhir'))->where('status', 1)->format('Y-m-d') : Carbon::now()->format('Y-m-d');
+        $tanggal_awal = $request->input('tanggal_awal') ? Carbon::parse($request->input('tanggal_awal'))->format('Y-m-d') : Carbon::now()->subDays(7)->format('Y-m-d');
+        $tanggal_akhir = $request->input('tanggal_akhir') ? Carbon::parse($request->input('tanggal_akhir'))->format('Y-m-d') : Carbon::now()->format('Y-m-d');
         return view('invoice/index', [
             'title'=>'invoice',
-            'invoice' => Invoice::whereIn('status', [2, 3])
+            'invoice' => Invoice::whereIn('status', [1, 2, 3])
                 ->whereDate('created_at', '>=', $tanggal_awal)
                 ->whereDate('created_at', '<=', $tanggal_akhir)->get(),
             'active' => 'invoice',
