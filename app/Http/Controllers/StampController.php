@@ -76,13 +76,13 @@ class StampController extends Controller
            'status' => 2 
         ]);
 
-        PushNotification::create([
-            'user_id' => $request->user_id,
-            'judul' => $request->judul,
-            'isi' => $request->isi,
-            'is_admin' => $request->is_admin,
-            'scheduled_at' => $request->scheduled_at,
-        ]);
+        // PushNotification::create([
+        //     'user_id' => $request->user_id,
+        //     'judul' => $request->judul,
+        //     'isi' => $request->isi,
+        //     'is_admin' => $request->is_admin,
+        //     'scheduled_at' => $request->scheduled_at,
+        // ]);
         return redirect()->route('stamp')->with('success', 'Berhasil menggunakan Kode Stamp');
     }
     

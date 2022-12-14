@@ -118,11 +118,11 @@
                         </button>
                       </div>
                       <div>
-                        <div class="flex-d-flex justify-content-between align-items-center mt-5">
+                        {{-- <div class="flex-d-flex justify-content-between align-items-center mt-5">
                           <button class="btn btn-primary ms-4" href="https://api.whatsapp.com/send?phone=15551234567"> 
                             Konfirmasi Pembayaran
                           </button>
-                        </div>
+                        </div> --}}
                       <div class="d-flex  mb-5 d-flex justify-content-center ">
                         <div class="row d-flex justify-content-center align-item-center mb-5 mt-10">
                           <h2 >Transfer Atm</h2>
@@ -148,6 +148,8 @@
                           <span class="mt-3">6. Konfirmasi dengan memilih “YA” atau “YES” </span>
                           <span class="mt-3">7. Simpan struk sebagai bukti transfer </span>
                           <span class="mt-3">8. Lalu Kirim Bukti ScreenShot ke Admin Laksa </span>
+                          <a href="https://linktr.ee/laksa_coffee">Klik Disini</a>
+
                         </div>
                       </div>
                     </div>
