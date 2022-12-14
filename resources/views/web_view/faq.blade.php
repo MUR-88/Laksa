@@ -35,7 +35,7 @@
                     <button class="col-12 btn btn-secondary btn-sm text-black-600" data-bs-toggle="collapse" href="#faq1" role="button" aria-expanded="false" aria-controls="faq1">
                       <a class="fas fa-chevron-circle-down text-black">
                       </a>
-                      Cara Pembayaran
+                      Bagaimana Melakukan pembayaran
                     </button>
                     {{-- <button class="col-12 btn btn-secondary btn-sm text-black-600">
                       <a class="fas fa-chevron-circle-down text-black" data-bs-toggle="collapse" href="#bRI" role="button" aria-expanded="false" aria-controls="bRI">
